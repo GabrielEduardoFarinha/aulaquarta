@@ -1,0 +1,46 @@
+
+
+int buttonpin = 9;
+int ledpin1 = 6;
+int ledpin2 = 5;
+int ledpin3 = 3;
+int estado = 0;
+int ultimoEstado = 0;
+int clickCount = 0;
+
+void setup() {
+  pinMode(buttonpin, INPUT);
+  pinMode(ledpin1, OUTPUT);
+  pinMode(ledpin2, OUTPUT);
+  pinMode(ledpin3, OUTPUT);
+  digitalWrite(ledpin1, LOW);
+  digitalWrite(ledpin2, LOW);
+  digitalWrite(ledpin3, LOW);
+}
+
+void loop() {
+  estado = digitalRead(buttonpin);
+
+  if (estado == HIGH && ultimoEstado == LOW) {
+    delay(150);
+    clickCount++;
+
+    if (clickCount == 1) {
+      digitalWrite(ledpin1, HIGH);
+    } 
+    else if (clickCount == 2) {
+      digitalWrite(ledpin2, HIGH);
+    } 
+    else if (clickCount == 3) {
+      digitalWrite(ledpin3, HIGH);
+    } 
+    else if (clickCount == 4) {
+      digitalWrite(ledpin1, LOW);
+      digitalWrite(ledpin2, LOW);
+      digitalWrite(ledpin3, LOW);
+      clickCount = 0;
+    }
+  }
+
+  ultimoEstado = estado;
+}
