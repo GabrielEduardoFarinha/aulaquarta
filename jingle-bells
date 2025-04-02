@@ -1,0 +1,68 @@
+const int buzzerPin = 9;
+
+const int songLength = 31;
+
+char notes[] = "eee eee egcde fff ffee eeggfdc ";
+
+int beats[] = {2,2,3,1, 2,2,3,1, 2,2,3,1,4,4, 2,2,3,0, 1,2,2,2,0, 1,1,2,2,2,2,4,4};
+
+int tempo = 260;
+
+const int ledPins[] = {2, 3, 4, 10}; // LEDs nas portas 2, 3, 4 e 10
+
+void setup() 
+{
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(13, OUTPUT);
+  
+  for (int i = 0; i < 4; i++) {
+    pinMode(ledPins[i], OUTPUT);  // Configura as portas dos LEDs como saída
+  }
+}
+
+void loop() 
+{
+  int i, b, duration;
+
+  for (i = 0; i < songLength; i++) 
+  {
+    duration = beats[i] * tempo;
+    
+    if (notes[i] == ' ')          
+    {
+      delay(duration);            
+    }
+    else                          
+    {
+      tone(buzzerPin, frequency(notes[i]), duration);
+      
+      // Acende um LED aleatório
+      int randomLed = random(0, 4);  // Escolhe um LED aleatório (0 a 3)
+      digitalWrite(ledPins[randomLed], HIGH);  // Acende o LED aleatório
+      digitalWrite(13, HIGH);
+      delay(duration); // Aguarda o término da nota
+      digitalWrite(ledPins[randomLed], LOW);   // Apaga o LED aleatório
+    }
+    
+    digitalWrite(13, LOW);
+    delay(tempo / 10);
+  }
+}
+
+int frequency(char note) 
+{
+  int i;
+  const int numNotes = 8;
+
+  char names[] = { 'c', 'd', 'e', 'f', 'g', 'a', 'b', 'C' };
+  int frequencies[] = {262, 294, 330, 349, 392, 440, 494, 523};
+  
+  for (i = 0; i < numNotes; i++)  
+  {
+    if (names[i] == note)         
+    {
+      return(frequencies[i]);
+    }
+  }
+  return(0);
+}
