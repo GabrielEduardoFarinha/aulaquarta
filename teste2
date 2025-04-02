@@ -1,0 +1,43 @@
+const int ledPins[] = {2, 3, 4, 10}; // LEDs nas portas 2, 3, 4 e 10
+const int buzzerPin = 9;
+
+int melody[] = {
+  262, 262, 294, 392, 392, 392, 294, 392, 523, 523, 523, 523, 523, 392, 349, 349,
+  349, 349, 392, 392, 392, 349, 349, 330, 330, 349, 349, 392, 392, 523, 523, 523,
+  523, 523, 392, 349, 349, 349, 349, 392, 392, 392, 349, 349, 330, 330, 349, 349,
+  392, 392, 523
+};
+
+int noteDurations[] = {
+  4, 4, 4, 4, 8, 8, 4, 4, 4, 4, 8, 8, 4, 4, 4, 4, 
+  4, 4, 4, 4, 4, 4, 8, 8, 4, 4, 4, 4, 8, 8, 4, 4, 
+  4, 4, 8, 8, 4, 4, 4, 4, 8, 8, 4, 4, 4, 4, 8, 8,
+  4, 4
+};
+
+void setup() {
+  for (int i = 0; i < 4; i++) {
+    pinMode(ledPins[i], OUTPUT);  // Configura as portas 2, 3, 4, 10 como saída
+  }
+  pinMode(buzzerPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  for (int i = 0; i < 50; i++) {
+    int noteDuration = 1000 / noteDurations[i];
+
+    // Acende um LED aleatório
+    int randomLed = random(0, 4);  // Escolhe um LED aleatório (0 a 3)
+    digitalWrite(ledPins[randomLed], HIGH);  // Acende o LED aleatório
+    tone(buzzerPin, melody[i], noteDuration); // Toca a nota no buzzer
+    delay(noteDuration);
+    
+    digitalWrite(ledPins[randomLed], LOW);  // Apaga o LED aleatório
+    delay(50);  // Tempo curto entre acender e apagar para efeito de piscar
+    
+    delay(20);  // Pequeno atraso entre as notas
+  }
+
+  delay(500);  // Pausa para a música não repetir imediatamente
+}
